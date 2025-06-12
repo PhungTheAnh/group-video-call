@@ -2,4 +2,4 @@
 
 # vào phần Console
 
-# tạo chanel name và get token mới
+# tạo channel name và get token mới
