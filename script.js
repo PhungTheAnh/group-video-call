@@ -1,13 +1,12 @@
 //#1
-let client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+let client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 
 //#2
 let config = {
   appid: '5d636bc6c717443c90b3608946ee1e51',
-  token:
-    '007eJxTYLC52Oixc9vvrTJTF69sfCvZVxn73KWuKtx0Y3mX/Zrit7kKDKYpZsZmSclmyeaG5iYmxsmWBknGZgYWliZmqamGqaaGKUyR6Q2BjAzGbh8ZGRkgEMRnYQhJLS5hYAAAjVwfTA==',
+  token: 'https://github.com/PhungTheAnh/group-video-call.git',
   uid: 'the anh',
-  channel: 'Test',
+  channel: 'theanh',
 };
 
 //#3 - Setting tracks for when user joins
@@ -25,46 +24,46 @@ let localTrackState = {
 //#5 - Set remote tracks to store other users
 let remoteTracks = {};
 
-document.getElementById("join-btn").addEventListener("click", async () => {
-  config.uid = document.getElementById("username").value;
+document.getElementById('join-btn').addEventListener('click', async () => {
+  config.uid = document.getElementById('username').value;
   await joinStreams();
-  document.getElementById("join-wrapper").style.display = "none";
-  document.getElementById("footer").style.display = "flex";
+  document.getElementById('join-wrapper').style.display = 'none';
+  document.getElementById('footer').style.display = 'flex';
 });
 
-document.getElementById("mic-btn").addEventListener("click", async () => {
+document.getElementById('mic-btn').addEventListener('click', async () => {
   //Check if what the state of muted currently is
   //Disable button
   if (!localTrackState.audioTrackMuted) {
     //Mute your audio
     await localTracks.audioTrack.setMuted(true);
     localTrackState.audioTrackMuted = true;
-    document.getElementById("mic-btn").style.backgroundColor =
-      "rgb(255, 80, 80, 0.7)";
+    document.getElementById('mic-btn').style.backgroundColor =
+      'rgb(255, 80, 80, 0.7)';
   } else {
     await localTracks.audioTrack.setMuted(false);
     localTrackState.audioTrackMuted = false;
-    document.getElementById("mic-btn").style.backgroundColor = "#1f1f1f8e";
+    document.getElementById('mic-btn').style.backgroundColor = '#1f1f1f8e';
   }
 });
 
-document.getElementById("camera-btn").addEventListener("click", async () => {
+document.getElementById('camera-btn').addEventListener('click', async () => {
   //Check if what the state of muted currently is
   //Disable button
   if (!localTrackState.videoTrackMuted) {
     //Mute your audio
     await localTracks.videoTrack.setMuted(true);
     localTrackState.videoTrackMuted = true;
-    document.getElementById("camera-btn").style.backgroundColor =
-      "rgb(255, 80, 80, 0.7)";
+    document.getElementById('camera-btn').style.backgroundColor =
+      'rgb(255, 80, 80, 0.7)';
   } else {
     await localTracks.videoTrack.setMuted(false);
     localTrackState.videoTrackMuted = false;
-    document.getElementById("camera-btn").style.backgroundColor = "#1f1f1f8e";
+    document.getElementById('camera-btn').style.backgroundColor = '#1f1f1f8e';
   }
 });
 
-document.getElementById("leave-btn").addEventListener("click", async () => {
+document.getElementById('leave-btn').addEventListener('click', async () => {
   //Loop threw local tracks and stop them so unpublish event gets triggered, then set to undefined
   //Hide footer
   for (trackName in localTracks) {
@@ -78,29 +77,29 @@ document.getElementById("leave-btn").addEventListener("click", async () => {
 
   //Leave the channel
   await client.leave();
-  document.getElementById("footer").style.display = "none";
-  document.getElementById("user-streams").innerHTML = "";
-  document.getElementById("join-wrapper").style.display = "block";
+  document.getElementById('footer').style.display = 'none';
+  document.getElementById('user-streams').innerHTML = '';
+  document.getElementById('join-wrapper').style.display = 'block';
 });
 
 //Method will take all my info and set user stream in frame
 let joinStreams = async () => {
   //Is this place hear strategicly or can I add to end of method?
 
-  client.on("user-published", handleUserJoined);
-  client.on("user-left", handleUserLeft);
+  client.on('user-published', handleUserJoined);
+  client.on('user-left', handleUserLeft);
 
   client.enableAudioVolumeIndicator(); // Triggers the "volume-indicator" callback event every two seconds.
-  client.on("volume-indicator", function (evt) {
+  client.on('volume-indicator', function (evt) {
     for (let i = 0; evt.length > i; i++) {
       let speaker = evt[i].uid;
       let volume = evt[i].level;
       if (volume > 0) {
         document.getElementById(`volume-${speaker}`).src =
-          "./assets/volume-on.svg";
+          './assets/volume-on.svg';
       } else {
         document.getElementById(`volume-${speaker}`).src =
-          "./assets/volume-off.svg";
+          './assets/volume-off.svg';
       }
     }
   });
@@ -125,8 +124,8 @@ let joinStreams = async () => {
                   </div>`;
 
   document
-    .getElementById("user-streams")
-    .insertAdjacentHTML("beforeend", player);
+    .getElementById('user-streams')
+    .insertAdjacentHTML('beforeend', player);
   //#8 - Player user stream in div
   localTracks.videoTrack.play(`stream-${config.uid}`);
 
@@ -137,7 +136,7 @@ let joinStreams = async () => {
 };
 
 let handleUserJoined = async (user, mediaType) => {
-  console.log("Handle user joined");
+  console.log('Handle user joined');
 
   //#11 - Add user to list of remote users
   remoteTracks[user.uid] = user;
@@ -145,9 +144,9 @@ let handleUserJoined = async (user, mediaType) => {
   //#12 Subscribe ro remote users
   await client.subscribe(user, mediaType);
 
-  if (mediaType === "video") {
+  if (mediaType === 'video') {
     let player = document.getElementById(`video-wrapper-${user.uid}`);
-    console.log("player:", player);
+    console.log('player:', player);
     if (player != null) {
       player.remove();
     }
@@ -157,18 +156,18 @@ let handleUserJoined = async (user, mediaType) => {
                         <div  class="video-player player" id="stream-${user.uid}"></div>
                       </div>`;
     document
-      .getElementById("user-streams")
-      .insertAdjacentHTML("beforeend", player);
+      .getElementById('user-streams')
+      .insertAdjacentHTML('beforeend', player);
     user.videoTrack.play(`stream-${user.uid}`);
   }
 
-  if (mediaType === "audio") {
+  if (mediaType === 'audio') {
     user.audioTrack.play();
   }
 };
 
 let handleUserLeft = (user) => {
-  console.log("Handle user left!");
+  console.log('Handle user left!');
   //Remove from remote users and remove users video wrapper
   delete remoteTracks[user.uid];
   document.getElementById(`video-wrapper-${user.uid}`).remove();
