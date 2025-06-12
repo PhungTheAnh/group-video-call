@@ -4,9 +4,10 @@ let client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 //#2
 let config = {
   appid: '5d636bc6c717443c90b3608946ee1e51',
-  token: 'https://github.com/PhungTheAnh/group-video-call.git',
+  token:
+    '007eJxTYLhusvbEC6HHFjt+Ln6s5tPYqr3hb1nNz5kzhAX2pNea6OcpMJimmBmbJSWbJZsbmpuYGCdbGiQZmxlYWJqYpaYappoaptZ5ZTQEMjLMeW/LzMgAgSA+G0NJRmpiXgYDAwDsrCDL',
   uid: 'the anh',
-  channel: 'theanh',
+  channel: 'theanh', //
 };
 
 //#3 - Setting tracks for when user joins
